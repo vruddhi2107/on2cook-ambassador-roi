@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="on2cook favicon.png">
+<title>On2Cook — Ambassador ROI Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #E8232A;
+  --cream: #F6F7EB;
+  --black: #000807;
+  --red-dim: rgba(232,35,42,0.12);
+  --red-mid: rgba(232,35,42,0.4);
+  --cream-dim: rgba(246,247,235,0.06);
+  --cream-mid: rgba(246,247,235,0.15);
+  --border: rgba(246,247,235,0.1);
+  --muted: rgba(246,247,235,0.4);
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content:'';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.4;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(0,8,7,0.92);
+  backdrop-filter: blur(16px);
+}
+.logo-wrap { display:flex; align-items:center; gap:14px; }
+.logo-mark {
+  width: 38px; height: 38px;
+  background-image: url('on2cook no bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px; color: var(--cream); letter-spacing: 0.5px;
+  clip-path: polygon(0 0, 100% 0, 100% 75%, 88% 100%, 0 100%);
+}
+.logo-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; line-height: 1; }
+.logo-tag { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 2px; }
+.header-pill {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; border: 1px solid var(--red); color: var(--red);
+  padding: 5px 14px; border-radius: 2px;
+}
+.nav {
+  display: flex; gap: 0; padding: 0 40px;
+  background: var(--black); border-bottom: 1px solid var(--border);
+  overflow-x: auto; scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display:none; }
+.nav-tab {
+  padding: 14px 22px; font-family: 'DM Mono', monospace; font-size: 10px;
+  font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent;
+  white-space: nowrap; transition: color 0.2s, border-color 0.2s;
+}
+.nav-tab:hover { color: var(--cream); }
+.nav-tab.active { color: var(--cream); border-bottom-color: var(--red); }
+main { padding: 40px; max-width: 1440px; margin: 0 auto; }
+.section { display:none; }
+.section.active { display:block; }
+.sec-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 36px; flex-wrap: wrap; }
+.sec-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 6vw, 72px); letter-spacing: 3px; line-height: 0.9; }
+.sec-title em { font-family: 'Instrument Serif', serif; font-style: italic; color: var(--red); }
+.sec-desc { font-size: 13px; color: var(--muted); max-width: 480px; line-height: 1.7; margin-top: 10px; }
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.g3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+.gauto { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; }
+.card {
+  border: 1px solid var(--border); border-radius: 4px; padding: 28px;
+  background: var(--cream-dim); position: relative; overflow: hidden;
+  transition: border-color 0.25s, background 0.25s;
+}
+.card:hover { border-color: rgba(246,247,235,0.2); }
+.card.red-card { background: var(--red); border-color: var(--red); color: var(--cream); }
+.card.outline-card { background: transparent; border: 2px solid var(--red); }
+.card-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.card-eyebrow.red { color: var(--red); }
+.card-num { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; line-height: 1; }
+.card-num.xl { font-size: 54px; }
+.card-sub { font-size: 12px; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+.card.red-card .card-sub { color: rgba(246,247,235,0.7); }
+.kpi-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+  border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 28px;
+}
+.kpi-cell { background: var(--cream-dim); padding: 24px 20px; position: relative; }
+.kpi-cell::after { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; }
+.kpi-cell.k1::after { background: var(--red); }
+.kpi-cell.k2::after { background: rgba(246,247,235,0.5); }
+.kpi-cell.k3::after { background: var(--red); }
+.kpi-cell.k4::after { background: rgba(246,247,235,0.5); }
+.kpi-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.kpi-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 2px; line-height: 1; }
+.kpi-note { font-size: 11px; color: var(--muted); margin-top: 4px; }
+.pill-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px; }
+.pill {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 9px 18px; border: 1px solid var(--border);
+  border-radius: 2px; cursor: pointer; color: var(--muted);
+  transition: all 0.2s; background: transparent;
+}
+.pill:hover { color: var(--cream); border-color: rgba(246,247,235,0.3); }
+.pill.active { background: var(--red); border-color: var(--red); color: var(--cream); }
+.slider-block { margin-bottom: 20px; }
+.slider-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.slider-lbl { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.slider-val-lbl { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; color: var(--cream); }
+input[type=range] {
+  width: 100%; -webkit-appearance: none; appearance: none;
+  height: 2px; background: var(--border); outline: none; border-radius: 0;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 18px; height: 18px;
+  background: var(--red); border: 2px solid var(--cream);
+  border-radius: 50%; cursor: pointer; transition: transform 0.15s;
+}
+input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.3); }
+.bar-chart { display:flex; flex-direction:column; gap:10px; margin-top:8px; }
+.bar-row { display:flex; align-items:center; gap:16px; }
+.bar-lbl { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; color: var(--muted); width: 170px; flex-shrink: 0; }
+.bar-track { flex: 1; height: 32px; background: rgba(246,247,235,0.04); border-radius: 2px; overflow: hidden; border: 1px solid var(--border); }
+.bar-fill {
+  height: 100%; display: flex; align-items: center; justify-content: flex-end;
+  padding-right: 10px; font-family: 'DM Mono', monospace; font-size: 11px;
+  font-weight: 500; color: var(--black); transition: width 0.7s cubic-bezier(0.4,0,0.2,1); white-space: nowrap;
+}
+.bar-fill.cream { background: var(--cream); color: var(--black); }
+.bar-fill.red { background: var(--red); color: var(--cream); }
+.data-table { width:100%; border-collapse:collapse; }
+.data-table thead th {
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted); padding: 10px 14px;
+  text-align: left; border-bottom: 1px solid var(--border);
+}
+.data-table tbody td { padding: 11px 14px; font-size: 13px; border-bottom: 1px solid rgba(246,247,235,0.04); font-family: 'DM Mono', monospace; }
+.data-table tbody tr:hover td { background: var(--cream-dim); }
+.data-table tbody tr.hl td { background: var(--red-dim); border-bottom-color: var(--red-mid); }
+.data-table tbody tr.hl td:first-child { border-left: 2px solid var(--red); }
+.tag { display: inline-block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; padding: 2px 7px; border-radius: 2px; }
+.tag-red { background: var(--red-dim); color: var(--red); border: 1px solid var(--red-mid); }
+.tag-cream { background: var(--cream-dim); color: var(--cream); border: 1px solid var(--border); }
+.roi-hero {
+  background: var(--red); border-radius: 4px; padding: 32px;
+  text-align: center; position: relative; overflow: hidden;
+}
+.roi-hero::before {
+  content:''; position:absolute; width:300px; height:300px;
+  border-radius:50%; background: rgba(0,0,0,0.12); right:-80px; top:-80px;
+}
+.roi-eyebrow { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: rgba(246,247,235,0.6); margin-bottom: 10px; }
+.roi-num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(48px,8vw,80px); letter-spacing: 3px; line-height: 1; color: var(--cream); position: relative; z-index: 1; }
+.roi-monthly { font-size: 13px; color: rgba(246,247,235,0.7); margin-top: 6px; font-family: 'DM Mono', monospace; }
+.year-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.year-card { border: 1px solid var(--border); border-radius: 4px; padding: 24px; position: relative; overflow: hidden; background: var(--cream-dim); }
+.year-card.primary { background: var(--red); border-color: var(--red); }
+.year-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.year-card.primary .year-label { color: rgba(246,247,235,0.6); }
+.year-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; line-height: 1; }
+.year-growth { font-family: 'DM Mono', monospace; font-size: 10px; margin-top: 6px; color: var(--muted); }
+.year-card.primary .year-growth { color: rgba(246,247,235,0.6); }
+.support-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.check { color: var(--red); font-size: 12px; flex-shrink:0; margin-top:2px; }
+.divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+.inline-input {
+  background: transparent; border: none; border-bottom: 1px solid var(--border);
+  color: var(--cream); font-family: 'DM Mono', monospace; font-size: 11px;
+  width: 70px; text-align: center; outline: none; padding: 4px 6px;
+  transition: border-color 0.2s;
+}
+.inline-input:focus { border-bottom-color: var(--red); }
+footer { border-top: 1px solid var(--border); padding: 20px 40px; text-align: center; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 1px; }
+@keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+.section.active > * { animation: fadeUp 0.5s ease both; }
+.section.active > *:nth-child(1) { animation-delay: 0.05s; }
+.section.active > *:nth-child(2) { animation-delay: 0.10s; }
+.section.active > *:nth-child(3) { animation-delay: 0.15s; }
+.section.active > *:nth-child(4) { animation-delay: 0.20s; }
+.section.active > *:nth-child(5) { animation-delay: 0.25s; }
+.num-hi { color: var(--red); }
+.mt { margin-top: 24px; }
+.mt2 { margin-top: 40px; }
+
+/* ── STRATEGIC WIN CARD (new) ── */
+.sw-card {
+  border: 1px solid var(--border); border-radius: 4px;
+  background: var(--cream-dim); position: relative; overflow: hidden;
+  transition: border-color 0.25s, background 0.25s;
+}
+.sw-card:hover { border-color: rgba(246,247,235,0.2); }
+.sw-card.expanded { border-color: var(--red-mid); background: var(--red-dim); }
+.sw-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 24px; cursor: pointer; gap: 12px;
+}
+.sw-header-left { display:flex; align-items:center; gap:14px; }
+.sw-icon { font-size: 26px; flex-shrink:0; }
+.sw-name { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 14px; line-height: 1.3; }
+.sw-default-comm {
+  font-family: 'Bebas Neue', sans-serif; font-size: 28px;
+  letter-spacing: 2px; color: var(--red);
+}
+.sw-default-sub { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 2px; }
+.sw-toggle {
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted); border: 1px solid var(--border);
+  padding: 5px 12px; border-radius: 2px; white-space: nowrap; flex-shrink:0;
+  transition: all 0.2s; cursor:pointer; background:transparent;
+}
+.sw-card.expanded .sw-toggle { background: var(--red); border-color: var(--red); color: var(--cream); }
+.sw-calc {
+  display: none;
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--border);
+}
+.sw-card.expanded .sw-calc { display: block; }
+.sw-calc-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 20px;
+}
+.sw-field { display: flex; flex-direction: column; gap: 6px; }
+.sw-field-label {
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted);
+}
+.sw-field-input {
+  background: rgba(246,247,235,0.06); border: 1px solid var(--border);
+  border-radius: 2px; color: var(--cream); font-family: 'DM Mono', monospace;
+  font-size: 14px; padding: 10px 12px; outline: none; width: 100%;
+  transition: border-color 0.2s;
+}
+.sw-field-input:focus { border-color: var(--red); }
+.sw-result-row {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 20px;
+  padding-top: 20px; border-top: 1px solid var(--border);
+}
+.sw-result-cell { }
+.sw-result-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+.sw-result-val { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 1px; color: var(--cream); }
+.sw-result-val.highlight { color: var(--red); }
+.sw-equiv { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; margin-top: 4px; }
+
+/* ── TERRITORY PLANNER (new) ── */
+.tp-table-wrap { overflow-x: auto; }
+.tp-table { width:100%; border-collapse:collapse; }
+.tp-table thead th {
+  font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted); padding: 10px 10px 14px;
+  text-align: left; border-bottom: 1px solid var(--border); white-space:nowrap;
+}
+.tp-table tbody td { padding: 10px; border-bottom: 1px solid rgba(246,247,235,0.06); vertical-align: middle; }
+.tp-table tbody tr:hover td { background: rgba(246,247,235,0.03); }
+.tp-activity-name { font-size: 13px; font-family: 'Manrope', sans-serif; line-height:1.4; }
+.tp-activity-icon { font-size: 18px; margin-right: 8px; }
+.tp-input {
+  background: rgba(246,247,235,0.06); border: 1px solid var(--border);
+  border-radius: 2px; color: var(--cream); font-family: 'DM Mono', monospace;
+  font-size: 13px; padding: 7px 8px; outline: none; width: 72px;
+  text-align: center; transition: border-color 0.2s;
+}
+.tp-input:focus { border-color: var(--red); }
+.tp-pct-input {
+  background: rgba(246,247,235,0.06); border: 1px solid var(--border);
+  border-radius: 2px; color: var(--cream); font-family: 'DM Mono', monospace;
+  font-size: 13px; padding: 7px 8px; outline: none; width: 64px;
+  text-align: center; transition: border-color 0.2s;
+}
+.tp-pct-input:focus { border-color: var(--red); }
+.tp-units-out {
+  font-family: 'Bebas Neue', sans-serif; font-size: 24px;
+  color: var(--red); letter-spacing: 1px; text-align: center;
+}
+.tp-total-row td { border-top: 2px solid var(--border); border-bottom: none !important; padding-top: 16px !important; }
+.tp-total-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); }
+.tp-total-val { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: var(--red); }
+.tp-note { font-size: 11px; color: var(--muted); font-family:'DM Mono',monospace; line-height:1.5; }
+.tp-reset-btn {
+  font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted); border: 1px solid var(--border);
+  padding: 6px 14px; border-radius: 2px; cursor: pointer; background: transparent;
+  transition: all 0.2s;
+}
+.tp-reset-btn:hover { color: var(--cream); border-color: rgba(246,247,235,0.3); }
+
+.act-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.act-emoji { font-size: 18px; flex-shrink:0; }
+.act-name { flex:1; font-size:13px; line-height:1.4; }
+.act-input {
+  background: transparent; border: 1px solid var(--border); border-radius: 2px;
+  color: var(--cream); padding: 6px 10px; font-size: 13px; width: 64px;
+  text-align: center; font-family: 'DM Mono', monospace; outline: none; transition: border-color 0.2s;
+}
+.act-input:focus { border-color: var(--red); }
+.act-units { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--red); min-width: 50px; text-align: right; }
+
+@media (max-width:1000px) {
+  .g4, .kpi-row { grid-template-columns: 1fr 1fr; }
+  .g3, .g2, .year-cards { grid-template-columns: 1fr; }
+  .sw-calc-grid { grid-template-columns: 1fr 1fr; }
+  .sw-result-row { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width:640px) {
+  header, .nav, main, footer { padding-left:20px; padding-right:20px; }
+  .g4, .kpi-row, .g3, .g2, .year-cards { grid-template-columns: 1fr; }
+  .sw-calc-grid, .sw-result-row { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+    <div class="logo-mark"></div>
+    <div>
+      <div class="logo-name">On2Cook</div>
+      <div class="logo-tag">Ambassador ROI Portal</div>
+    </div>
+  </div>
+  <div class="header-pill">₹0 Inventory · Zero Risk</div>
+</header>
+
+<nav class="nav">
+  <div class="nav-tab active" onclick="go('overview')">Overview</div>
+  <div class="nav-tab" onclick="go('calculator')">ROI Calculator</div>
+  <div class="nav-tab" onclick="go('commission')">Commission Slabs</div>
+  <div class="nav-tab" onclick="go('strategic')">Strategic Wins</div>
+  <div class="nav-tab" onclick="go('territory')">Territory Planner</div>
+  <div class="nav-tab" onclick="go('forecast')">3-Year Forecast</div>
+</nav>
+
+<main>
+
+<!-- ═══════════════════ OVERVIEW ═══════════════════ -->
+<div class="section active" id="overview">
+  <div class="sec-head">
+    <div>
+      <div class="sec-title">Ambassador<br><em>Earnings</em> Portal</div>
+      <div class="sec-desc">Zero inventory. Zero franchise fee. Commission paid within 14 days of collections. The numbers below are your ceiling — not a cap.</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-direction:column;align-items:flex-end;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;">Product Price</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:56px;letter-spacing:3px;color:var(--red);line-height:1;">₹2,00,000</div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);">per unit + GST</div>
+    </div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-cell k1">
+      <div class="kpi-label">Annual Income Range</div>
+      <div class="kpi-val">₹80L – ₹3Cr+</div>
+      <div class="kpi-note">Based on scenario</div>
+    </div>
+    <div class="kpi-cell k2">
+      <div class="kpi-label">Your Investment</div>
+      <div class="kpi-val">₹0</div>
+      <div class="kpi-note">No inventory purchase</div>
+    </div>
+    <div class="kpi-cell k3">
+      <div class="kpi-label">Commission Range</div>
+      <div class="kpi-val">10–20%</div>
+      <div class="kpi-note">Volume-based slabs</div>
+    </div>
+    <div class="kpi-cell k4">
+      <div class="kpi-label">On2Cook's Investment in You</div>
+      <div class="kpi-val">₹3.27L</div>
+      <div class="kpi-note">Demo units + setup support</div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="card-eyebrow red">Scenario Comparison</div>
+      <div id="ov-bars" class="bar-chart" style="margin-top:16px;"></div>
+    </div>
+    <div class="g2" style="align-content:start;">
+      <div class="card red-card">
+        <div class="card-eyebrow" style="color:rgba(246,247,235,0.6);">Conservative</div>
+        <div class="card-num">₹93.6L</div>
+        <div class="card-sub">20 units/month · 20% commission</div>
+      </div>
+      <div class="card outline-card">
+        <div class="card-eyebrow red">Leadership</div>
+        <div class="card-num">₹2.85Cr</div>
+        <div class="card-sub">60 units/month + enterprise wins</div>
+      </div>
+      <div class="card">
+        <div class="card-eyebrow">Worst Case</div>
+        <div class="card-num" style="font-size:32px;color:var(--muted);">₹26.4L</div>
+        <div class="card-sub">8 units/month floor scenario</div>
+      </div>
+      <div class="card">
+        <div class="card-eyebrow">Growth Partner</div>
+        <div class="card-num" style="font-size:32px;">₹1.65Cr</div>
+        <div class="card-sub">35 units + 1 strategic win</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2 mt">
+    <div class="card">
+      <div class="card-eyebrow red" style="margin-bottom:16px;">On2Cook Provides</div>
+      <div id="onc-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow" style="margin-bottom:16px;">Your Role</div>
+      <div id="amb-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ CALCULATOR ═══════════════════ -->
+<div class="section" id="calculator">
+  <div class="sec-head">
+    <div>
+      <div class="sec-title">ROI<br><em>Calculator</em></div>
+      <div class="sec-desc">Drag the sliders to model your own scenario. All figures are pre-tax and indicative.</div>
+    </div>
+  </div>
+
+  <div class="pill-row">
+    <div class="pill" onclick="loadScen('worst',this)">Worst Case</div>
+    <div class="pill active" onclick="loadScen('conservative',this)">Conservative</div>
+    <div class="pill" onclick="loadScen('growth',this)">Growth Partner</div>
+    <div class="pill" onclick="loadScen('leadership',this)">Leadership</div>
+    <div class="pill" onclick="loadScen('custom',this)">Custom</div>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="card">
+        <div class="card-eyebrow red" style="margin-bottom:20px;">Your Inputs</div>
+        <div class="slider-block">
+          <div class="slider-header"><span class="slider-lbl">Units / Month</span><span class="slider-val-lbl" id="l-units">20</span></div>
+          <input type="range" id="s-units" min="1" max="100" value="20" oninput="calc()">
+        </div>
+        <div class="slider-block">
+          <div class="slider-header"><span class="slider-lbl">Selling Price / Unit</span><span class="slider-val-lbl" id="l-price">₹2.0L</span></div>
+          <input type="range" id="s-price" min="100000" max="500000" step="10000" value="200000" oninput="calc()">
+        </div>
+        <div class="slider-block">
+          <div class="slider-header"><span class="slider-lbl">Strategic Win Units / Year</span><span class="slider-val-lbl" id="l-strat">0</span></div>
+          <input type="range" id="s-strat" min="0" max="500" step="25" value="0" oninput="calc()">
+        </div>
+        <div class="slider-block">
+          <div class="slider-header"><span class="slider-lbl">Chef Cost Share / Month</span><span class="slider-val-lbl" id="l-chef">₹20K</span></div>
+          <input type="range" id="s-chef" min="0" max="20000" step="1000" value="20000" oninput="calc()">
+        </div>
+        <hr class="divider">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+          <div><div class="kpi-label">Slab</div><div id="r-slab" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--red);"></div></div>
+          <div><div class="kpi-label">Per Unit</div><div id="r-per" style="font-family:'Bebas Neue',sans-serif;font-size:28px;"></div></div>
+          <div><div class="kpi-label">Monthly Revenue</div><div id="r-rev" style="font-family:'Bebas Neue',sans-serif;font-size:28px;"></div></div>
+        </div>
+      </div>
+      <div class="card mt" style="padding:20px;">
+        <div class="card-eyebrow red" style="margin-bottom:14px;">12-Month Projection</div>
+        <div style="overflow-x:auto;"><div id="monthly-bars" style="min-width:500px;"></div></div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="roi-hero">
+        <div class="roi-eyebrow">Annual Net Earnings</div>
+        <div class="roi-num" id="roi-big">₹0</div>
+        <div class="roi-monthly" id="roi-mo"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="card"><div class="kpi-label">Gross Commission</div><div id="r-gross" style="font-family:'Bebas Neue',sans-serif;font-size:26px;"></div></div>
+        <div class="card"><div class="kpi-label">Strategic Commission</div><div id="r-stratc" style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--red);"></div></div>
+        <div class="card"><div class="kpi-label">Chef Cost / Year</div><div id="r-chefy" style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--muted);"></div></div>
+        <div class="card"><div class="kpi-label">On2Cook Invests in You</div><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;">₹3.27L</div><div class="kpi-note">Demo units + support</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ COMMISSION ═══════════════════ -->
+<div class="section" id="commission">
+  <div class="sec-head">
+    <div>
+      <div class="sec-title">Commission<br><em>Structure</em></div>
+      <div class="sec-desc">Three-tier slabs. Commission on selling price excluding GST. Paid within 14 days of collection.</div>
+    </div>
+  </div>
+  <div class="g3" style="margin-bottom:28px;">
+    <div class="card">
+      <div class="card-eyebrow">Tier 1 — Starter</div>
+      <div class="card-num" style="color:var(--muted);">10%</div>
+      <div class="card-sub">1–5 units / month<br>₹20,000 per unit · ₹1–1.2L/mo</div>
+    </div>
+    <div class="card">
+      <div class="card-eyebrow">Tier 2 — Scale-Up</div>
+      <div class="card-num">15%</div>
+      <div class="card-sub">6–10 units / month<br>₹30,000 per unit · ₹1.8–3L/mo</div>
+    </div>
+    <div class="card red-card">
+      <div class="card-eyebrow" style="color:rgba(246,247,235,0.6);">Tier 3 — High Performance</div>
+      <div class="card-num">20%</div>
+      <div class="card-sub">11+ units / month<br>₹40,000 per unit · Unlimited upside</div>
+    </div>
+  </div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+      <div class="card-eyebrow red">Full Slab Table · 1–60 Units</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;">HIGHLIGHT MY VOLUME:</span>
+        <input type="number" class="inline-input" id="hi-units" min="1" max="60" value="20" oninput="renderCommTable()">
+      </div>
+    </div>
+    <div style="max-height:420px;overflow-y:auto;">
+      <table class="data-table">
+        <thead><tr><th>Units/Mo</th><th>Commission %</th><th>Per Unit (₹)</th><th>Monthly Gross</th><th>Annual Gross</th></tr></thead>
+        <tbody id="comm-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ STRATEGIC ═══════════════════ -->
+<div class="section" id="strategic">
+  <div class="sec-head">
+    <div>
+      <div class="sec-title">Strategic<br><em>Wins</em></div>
+      <div class="sec-desc">One enterprise relationship can outperform months of individual sales. Expand any card to model your own deal terms — units, price, and commission rate.</div>
+    </div>
+  </div>
+
+  <!-- Portfolio summary bar -->
+  <div class="card" style="margin-bottom:24px;padding:20px 24px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div class="kpi-label" style="margin-bottom:4px;">Active Portfolio Total Commission</div>
+        <div id="sw-portfolio-total" style="font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;color:var(--red);">₹0</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:center;">
+        <div>
+          <div class="kpi-label">Deals Active</div>
+          <div id="sw-count" style="font-family:'Bebas Neue',sans-serif;font-size:32px;">0</div>
+        </div>
+        <div>
+          <div class="kpi-label">Total Units</div>
+          <div id="sw-total-units" style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--cream);">0</div>
+        </div>
+        <div>
+          <div class="kpi-label">Equiv. Months @20u</div>
+          <div id="sw-equiv-months" style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--muted);">0</div>
+        </div>
+      </div>
+    </div>
+    <div id="sw-portfolio-bars" class="bar-chart" style="margin-top:16px;display:none;"></div>
+  </div>
+
+  <div id="sw-grid" style="display:flex;flex-direction:column;gap:16px;"></div>
+</div>
+
+<!-- ═══════════════════ TERRITORY ═══════════════════ -->
+<div class="section" id="territory">
+  <div class="sec-head">
+    <div>
+      <div class="sec-title">Territory<br><em>Planner</em></div>
+      <div class="sec-desc">Edit every parameter of your activity plan — frequency, leads, qualification rate, conversion rate, and units per client. Live commission updates as you type.</div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <!-- Left: editable table -->
+    <div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--border);">
+          <div class="card-eyebrow red" style="margin-bottom:0;">Monthly Activity Model</div>
+          <button class="tp-reset-btn" onclick="resetTerritory()">Reset Defaults</button>
+        </div>
+        <div class="tp-table-wrap">
+          <table class="tp-table" id="tp-table">
+            <thead>
+              <tr>
+                <th style="min-width:180px;">Activity</th>
+                <th title="How many times per month">Count<br>/Month</th>
+                <th title="Leads generated per activity occurrence">Leads<br>/Activity</th>
+                <th title="% of leads that are qualified">Qual.<br>%</th>
+                <th title="% of qualified leads that convert to demo">Demo<br>Conv.%</th>
+                <th title="Units sold per converted client">Units<br>/Client</th>
+                <th style="min-width:80px;text-align:center;">Units<br>/Month</th>
+              </tr>
+            </thead>
+            <tbody id="tp-tbody"></tbody>
+            <tfoot>
+              <tr class="tp-total-row">
+                <td colspan="6" style="padding:16px 10px 10px;"><span class="tp-total-label">Total Expected Units / Month</span></td>
+                <td style="padding:16px 10px 10px;text-align:center;"><span class="tp-total-val" id="tp-total">0</span></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <div style="padding:14px 24px;border-top:1px solid var(--border);">
+          <div class="tp-note">Tip: Enterprise Presentations and Government Introductions drive the highest unit yields per activity. Click any cell to edit.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: live results -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="roi-hero">
+        <div class="roi-eyebrow">Projected Annual Commission</div>
+        <div class="roi-num" id="ter-annual">₹0</div>
+        <div class="roi-monthly" id="ter-mo">₹0 / month</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="card">
+          <div class="kpi-label">Commission Slab</div>
+          <div id="ter-slab" style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--red);">—</div>
+        </div>
+        <div class="card">
+          <div class="kpi-label">Monthly Revenue</div>
+          <div id="ter-rev" style="font-family:'Bebas Neue',sans-serif;font-size:28px;">—</div>
+          <div class="kpi-note" id="ter-rev-note"></div>
+        </div>
+        <div class="card">
+          <div class="kpi-label">Commission / Unit</div>
+          <div id="ter-per-unit" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--red);">—</div>
+        </div>
+        <div class="card">
+          <div class="kpi-label">Gross Annual Commission</div>
+          <div id="ter-gross" style="font-family:'Bebas Neue',sans-serif;font-size:28px;">—</div>
+        </div>
+      </div>
+
+      <!-- Activity breakdown bars -->
+      <div class="card">
+        <div class="card-eyebrow" style="margin-bottom:12px;">Units by Activity</div>
+        <div class="bar-chart" id="tp-breakdown-bars"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-eyebrow" style="margin-bottom:12px;">Market Potential</div>
+        <div class="bar-chart">
+          <div class="bar-row"><span class="bar-lbl">Organized (3L)</span><div class="bar-track"><div class="bar-fill red" style="width:23%;">3,00,000</div></div></div>
+          <div class="bar-row"><span class="bar-lbl">Unorganized (10L)</span><div class="bar-track"><div class="bar-fill cream" style="width:77%;">10,00,000</div></div></div>
+          <div class="bar-row"><span class="bar-lbl">Target Penetration (10%)</span><div class="bar-track"><div class="bar-fill red" style="width:7%;">30,000</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ FORECAST ═══════════════════ -->
+<div class="section" id="forecast">
+  <div class="sec-head">
+    <div>
+      <div class="sec-title">3-Year<br><em>Forecast</em></div>
+      <div class="sec-desc">Territory growth model. Year 1 is base; Years 2 and 3 apply your growth multipliers.</div>
+    </div>
+  </div>
+
+  <div class="pill-row">
+    <div class="pill" onclick="loadForecast('worst',this)">Worst Case</div>
+    <div class="pill active" onclick="loadForecast('conservative',this)">Conservative</div>
+    <div class="pill" onclick="loadForecast('growth',this)">Growth Partner</div>
+    <div class="pill" onclick="loadForecast('leadership',this)">Leadership</div>
+  </div>
+
+  <div class="g2" style="margin-bottom:24px;">
+    <div class="card">
+      <div class="card-eyebrow red" style="margin-bottom:20px;">Growth Settings</div>
+      <div class="slider-block">
+        <div class="slider-header"><span class="slider-lbl">Year 2 Growth Rate</span><span class="slider-val-lbl" id="l-y2">30%</span></div>
+        <input type="range" id="s-y2" min="0" max="1" step="0.05" value="0.3" oninput="renderForecast()">
+      </div>
+      <div class="slider-block">
+        <div class="slider-header"><span class="slider-lbl">Year 3 Growth Rate</span><span class="slider-val-lbl" id="l-y3">25%</span></div>
+        <input type="range" id="s-y3" min="0" max="1" step="0.05" value="0.25" oninput="renderForecast()">
+      </div>
+      <div class="slider-block">
+        <div class="slider-header"><span class="slider-lbl">Strategic Units / Year</span><span class="slider-val-lbl" id="l-fs">0</span></div>
+        <input type="range" id="s-fs" min="0" max="500" step="25" value="0" oninput="renderForecast()">
+      </div>
+    </div>
+    <div class="roi-hero" style="display:flex;flex-direction:column;justify-content:center;">
+      <div class="roi-eyebrow">3-Year Cumulative Gross Earnings</div>
+      <div class="roi-num" id="fc-total"></div>
+    </div>
+  </div>
+
+  <div class="year-cards" id="year-cards"></div>
+
+  <div class="card mt">
+    <div class="card-eyebrow red" style="margin-bottom:12px;">Year-on-Year Earnings</div>
+    <div id="fc-bars" class="bar-chart"></div>
+  </div>
+</div>
+
+</main>
+
+<footer>All figures pre-tax and indicative. GST excluded from commission calculations. First 6 months considered incubation period. Strategic wins are illustrative. &copy; On2Cook Ambassador Program.</footer>
+
+<script>
+// ── DATA (from Excel) ──
+const PRICE0 = 200000;
+const SLABS = [{min:1,max:5,rate:0.10},{min:6,max:10,rate:0.15},{min:11,max:9999,rate:0.20}];
+const SCENS = {
+  worst:        {units:8,  y2:0.50,y3:0.35,strat:0},
+  conservative: {units:20, y2:0.30,y3:0.25,strat:0},
+  growth:       {units:35, y2:0.25,y3:0.20,strat:100},
+  leadership:   {units:60, y2:0.20,y3:0.15,strat:250},
+  custom:       {units:20, y2:0.30,y3:0.25,strat:0},
+};
+
+// Strategic wins — from Excel "Strategic Wins" sheet
+const STRATS_DATA = [
+  {name:"Franchise Network",                   icon:"🏪", units:100,  commPct:0.20},
+  {name:"Enterprise Restaurant Group",         icon:"🍽️", units:250,  commPct:0.20},
+  {name:"Government Program",                  icon:"🏛️", units:500,  commPct:0.20},
+  {name:"State-Level Deployment",              icon:"🗺️", units:1000, commPct:0.20},
+  {name:"Large Hospitality / Institutional",   icon:"🏨", units:750,  commPct:0.20},
+  {name:"Multi-City Cloud Kitchen Chain",      icon:"☁️", units:300,  commPct:0.20},
+];
+
+// Territory — from Excel "Territory Planner" sheet
+const TP_DEFAULTS = [
+  {name:"Chef Meets / Demo Days",              icon:"👨‍🍳", count:2,   leads:15, qualPct:40, convPct:20, upc:1,  note:"Ambassador / client groceries"},
+  {name:"Hospitality Association Events",      icon:"🤝",  count:1,   leads:50, qualPct:25, convPct:15, upc:1,  note:"Joint market development"},
+  {name:"Enterprise Presentations",           icon:"📊",  count:6,   leads:1,  qualPct:100,convPct:50, upc:5,  note:"Enterprise deals can be 5+ units"},
+  {name:"Exhibition / Award Functions",        icon:"🏆",  count:0.5, leads:100,qualPct:20, convPct:10, upc:2,  note:"Quarterly averaged monthly"},
+  {name:"Government / Institutional",         icon:"🏛️",  count:2,   leads:1,  qualPct:50, convPct:20, upc:25, note:"Weighted for large-ticket outcomes"},
+  {name:"Dealer / Distributor Meets",         icon:"🔗",  count:1,   leads:20, qualPct:25, convPct:20, upc:3,  note:"Regional network effect"},
+];
+
+const ONC = ["Training the chef","Demo units provided free","Dispatch within 7 working days","Commission within 14 days of collection","Customer service & logistics","Performance marketing & telecalling","Technical-commercial sales support"];
+const AMB = ["Face of On2Cook for clients","Arrange demos & local events","Exhibitions & hospitality events","Dedicated SPOC for On2Cook","Demo space & local branding support","Market development activities"];
+
+// ── UTILS ──
+function slab(u){return SLABS.find(s=>u>=s.min&&u<=s.max)||SLABS[2];}
+function fmt(n){
+  if(n>=10000000)return '₹'+(n/10000000).toFixed(2)+'Cr';
+  if(n>=100000)return '₹'+(n/100000).toFixed(1)+'L';
+  if(n>=1000)return '₹'+(n/1000).toFixed(0)+'K';
+  return '₹'+Math.round(n);
+}
+function fmtS(n){return n>=10000000?(n/10000000).toFixed(2)+'Cr':n>=100000?(n/100000).toFixed(1)+'L':n>=1000?(n/1000).toFixed(0)+'K':Math.round(n);}
+function pct(n){return Math.round(n*100)+'%';}
+
+// ── NAV ──
+const TABS = ['overview','calculator','commission','strategic','territory','forecast'];
+function go(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-tab')[TABS.indexOf(id)].classList.add('active');
+}
+
+// ── OVERVIEW ──
+function initOverview(){
+  const sc = [
+    {l:'Worst Case (8u/mo)',    v:2640000},
+    {l:'Conservative (20u/mo)',v:9360000},
+    {l:'Growth (35u/mo)',      v:16560000},
+    {l:'Leadership (60u/mo)',  v:28560000},
+  ];
+  const max = 28560000;
+  document.getElementById('ov-bars').innerHTML = sc.map((s,i)=>`
+    <div class="bar-row">
+      <span class="bar-lbl">${s.l}</span>
+      <div class="bar-track"><div class="bar-fill ${i%2===0?'red':'cream'}" style="width:${(s.v/max*100).toFixed(1)}%;">${fmtS(s.v)}</div></div>
+    </div>`).join('');
+  document.getElementById('onc-list').innerHTML = ONC.map(x=>`<div class="support-item"><span class="check">▶</span><span>${x}</span></div>`).join('');
+  document.getElementById('amb-list').innerHTML = AMB.map(x=>`<div class="support-item"><span class="check" style="color:var(--cream);">▶</span><span>${x}</span></div>`).join('');
+}
+
+// ── CALCULATOR ──
+function calc(){
+  const u  = +document.getElementById('s-units').value;
+  const p  = +document.getElementById('s-price').value;
+  const sw = +document.getElementById('s-strat').value;
+  const ch = +document.getElementById('s-chef').value;
+  const sl = slab(u); const rate = sl.rate;
+  const perUnit = p*rate;
+  const grossAnn = u*12*perUnit;
+  const stratComm = sw*p*0.20;
+  const chefYear = ch*12;
+  const net = grossAnn+stratComm-chefYear;
+
+  document.getElementById('l-units').textContent = u;
+  document.getElementById('l-price').textContent = '₹'+(p/100000).toFixed(1)+'L';
+  document.getElementById('l-strat').textContent = sw;
+  document.getElementById('l-chef').textContent  = ch>=1000?'₹'+(ch/1000).toFixed(0)+'K':'₹'+ch;
+  document.getElementById('r-slab').textContent  = (rate*100).toFixed(0)+'%';
+  document.getElementById('r-per').textContent   = fmt(perUnit);
+  document.getElementById('r-rev').textContent   = fmt(u*p);
+  document.getElementById('r-gross').textContent = fmt(grossAnn);
+  document.getElementById('r-stratc').textContent= fmt(stratComm);
+  document.getElementById('r-chefy').textContent = fmt(chefYear);
+  document.getElementById('roi-big').textContent = fmt(net);
+  document.getElementById('roi-mo').textContent  = fmt(net/12)+' / month';
+
+  document.getElementById('monthly-bars').innerHTML = Array.from({length:12},(_,i)=>{
+    const v=u*perUnit;
+    return `<div class="bar-row"><span class="bar-lbl" style="width:60px;">Mo ${i+1}</span><div class="bar-track"><div class="bar-fill ${i%2===0?'red':'cream'}" style="width:100%;">${fmtS(v)}</div></div></div>`;
+  }).join('');
+}
+function loadScen(key,el){
+  document.querySelectorAll('#calculator .pill').forEach(p=>p.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const s = SCENS[key]||SCENS.conservative;
+  document.getElementById('s-units').value = s.units;
+  document.getElementById('s-strat').value = s.strat;
+  calc();
+}
+
+// ── COMMISSION TABLE ──
+function renderCommTable(){
+  const hi = +document.getElementById('hi-units').value||20;
+  let html='';
+  for(let u=1;u<=60;u++){
+    const sl=slab(u); const pu=200000*sl.rate; const mo=u*pu; const yr=mo*12;
+    html+=`<tr class="${u===hi?'hl':''}">
+      <td>${u}${u===hi?` <span class="tag tag-red">you</span>`:''}</td>
+      <td>${(sl.rate*100).toFixed(0)}%</td>
+      <td>${fmt(pu)}</td>
+      <td>${fmt(mo)}</td>
+      <td>${fmt(yr)}</td>
+    </tr>`;
+  }
+  document.getElementById('comm-tbody').innerHTML=html;
+  if(hi>=1&&hi<=60){
+    const rows=document.querySelectorAll('#comm-tbody tr');
+    if(rows[hi-1]) setTimeout(()=>rows[hi-1].scrollIntoView({block:'center',behavior:'smooth'}),80);
+  }
+}
+
+// ── STRATEGIC WINS ──
+let swState = STRATS_DATA.map((s,i)=>({
+  units: s.units,
+  price: PRICE0,
+  commPct: s.commPct * 100,
+  expanded: false,
+}));
+
+function initStrategic(){
+  renderSwGrid();
+}
+
+function renderSwGrid(){
+  const container = document.getElementById('sw-grid');
+  container.innerHTML = STRATS_DATA.map((s,i)=>{
+    const st = swState[i];
+    const revenue = st.units * st.price;
+    const commission = revenue * (st.commPct/100);
+    const equivMonths = (commission / (20 * PRICE0 * 0.20)).toFixed(1);
+    return `
+    <div class="sw-card ${st.expanded?'expanded':''}" id="swc-${i}">
+      <div class="sw-header" onclick="toggleSw(${i})">
+        <div class="sw-header-left">
+          <span class="sw-icon">${s.icon}</span>
+          <div>
+            <div class="sw-name">${s.name}</div>
+            <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:3px;">${st.units} units · ₹${(st.price/100000).toFixed(1)}L/unit · ${st.commPct}% commission</div>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div class="sw-default-comm">${fmt(commission)}</div>
+          <div class="sw-default-sub">≡ ${equivMonths} months @20u/mo</div>
+        </div>
+        <button class="sw-toggle" onclick="event.stopPropagation();toggleSw(${i})">${st.expanded?'▲ Close':'▼ Calc'}</button>
+      </div>
+      <div class="sw-calc">
+        <div class="sw-calc-grid">
+          <div class="sw-field">
+            <label class="sw-field-label">Units in Deal</label>
+            <input class="sw-field-input" type="number" min="1" max="10000" value="${st.units}" id="sw-units-${i}" oninput="updateSw(${i})" placeholder="e.g. 250">
+          </div>
+          <div class="sw-field">
+            <label class="sw-field-label">Selling Price / Unit (₹)</label>
+            <input class="sw-field-input" type="number" min="50000" max="1000000" step="10000" value="${st.price}" id="sw-price-${i}" oninput="updateSw(${i})" placeholder="200000">
+          </div>
+          <div class="sw-field">
+            <label class="sw-field-label">Commission % (your rate)</label>
+            <input class="sw-field-input" type="number" min="1" max="30" step="0.5" value="${st.commPct}" id="sw-comm-${i}" oninput="updateSw(${i})" placeholder="20">
+          </div>
+        </div>
+        <div class="sw-result-row" id="sw-results-${i}">
+          <div class="sw-result-cell">
+            <div class="sw-result-label">Deal Revenue</div>
+            <div class="sw-result-val" id="sw-r-rev-${i}">—</div>
+          </div>
+          <div class="sw-result-cell">
+            <div class="sw-result-label">Your Commission</div>
+            <div class="sw-result-val highlight" id="sw-r-comm-${i}">—</div>
+          </div>
+          <div class="sw-result-cell">
+            <div class="sw-result-label">Commission / Unit</div>
+            <div class="sw-result-val" id="sw-r-pu-${i}">—</div>
+          </div>
+          <div class="sw-result-cell">
+            <div class="sw-result-label">Equiv. Months @20u</div>
+            <div class="sw-result-val" id="sw-r-eq-${i}">—</div>
+            <div class="sw-equiv">at regular 20% slab</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  // Render results for already-expanded cards
+  STRATS_DATA.forEach((_,i)=>{ if(swState[i].expanded) calcSw(i); });
+  updateSwPortfolio();
+}
+
+function toggleSw(i){
+  swState[i].expanded = !swState[i].expanded;
+  const card = document.getElementById(`swc-${i}`);
+  card.classList.toggle('expanded', swState[i].expanded);
+  const btn = card.querySelector('.sw-toggle');
+  btn.textContent = swState[i].expanded ? '▲ Close' : '▼ Calc';
+  const calcDiv = card.querySelector('.sw-calc');
+  calcDiv.style.display = swState[i].expanded ? 'block' : 'none';
+  if(swState[i].expanded) calcSw(i);
+}
+
+function updateSw(i){
+  const u = parseFloat(document.getElementById(`sw-units-${i}`).value)||0;
+  const p = parseFloat(document.getElementById(`sw-price-${i}`).value)||PRICE0;
+  const c = parseFloat(document.getElementById(`sw-comm-${i}`).value)||20;
+  swState[i].units = u;
+  swState[i].price = p;
+  swState[i].commPct = c;
+  calcSw(i);
+  // Update header display
+  const card = document.getElementById(`swc-${i}`);
+  const revenue = u * p;
+  const commission = revenue * (c/100);
+  const equivMonths = commission > 0 ? (commission / (20 * PRICE0 * 0.20)).toFixed(1) : '0';
+  const headerComm = card.querySelector('.sw-default-comm');
+  const headerSub = card.querySelector('.sw-default-sub');
+  const headerMeta = card.querySelector('.sw-header .sw-header-left div div:last-child');
+  if(headerComm) headerComm.textContent = fmt(commission);
+  if(headerSub)  headerSub.textContent  = `≡ ${equivMonths} months @20u/mo`;
+  if(headerMeta) headerMeta.textContent = `${Math.round(u)} units · ₹${(p/100000).toFixed(1)}L/unit · ${c}% commission`;
+  updateSwPortfolio();
+}
+
+function calcSw(i){
+  const st = swState[i];
+  const revenue = st.units * st.price;
+  const commission = revenue * (st.commPct/100);
+  const perUnit = st.price * (st.commPct/100);
+  const equivMonths = commission > 0 ? (commission / (20 * PRICE0 * 0.20)).toFixed(1) : '0';
+  const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  set(`sw-r-rev-${i}`,  fmt(revenue));
+  set(`sw-r-comm-${i}`, fmt(commission));
+  set(`sw-r-pu-${i}`,   fmt(perUnit));
+  set(`sw-r-eq-${i}`,   equivMonths+'mo');
+}
+
+function updateSwPortfolio(){
+  let totalComm=0, totalUnits=0, count=0;
+  const bars=[];
+  STRATS_DATA.forEach((s,i)=>{
+    if(!swState[i].expanded) return; // only count open/active ones
+    const st = swState[i];
+    const c = st.units * st.price * (st.commPct/100);
+    totalComm += c; totalUnits += st.units; count++;
+    bars.push({label:s.name, val:c, icon:s.icon});
+  });
+  document.getElementById('sw-portfolio-total').textContent = fmt(totalComm);
+  document.getElementById('sw-count').textContent = count;
+  document.getElementById('sw-total-units').textContent = totalUnits;
+  document.getElementById('sw-equiv-months').textContent = totalComm>0?(totalComm/(20*PRICE0*0.20)).toFixed(1):'0';
+
+  const barsEl = document.getElementById('sw-portfolio-bars');
+  if(bars.length > 1){
+    barsEl.style.display='flex';
+    const maxV = Math.max(...bars.map(b=>b.val));
+    barsEl.innerHTML = bars.map((b,idx)=>`
+      <div class="bar-row">
+        <span class="bar-lbl">${b.icon} ${b.label.substring(0,18)}</span>
+        <div class="bar-track"><div class="bar-fill ${idx%2===0?'red':'cream'}" style="width:${maxV>0?(b.val/maxV*100).toFixed(1):0}%;">${fmtS(b.val)}</div></div>
+      </div>`).join('');
+  } else {
+    barsEl.style.display='none';
+  }
+}
+
+// ── TERRITORY PLANNER ──
+let tpState = TP_DEFAULTS.map(r=>({...r}));
+
+function initTerritory(){
+  renderTpTable();
+}
+
+function renderTpTable(){
+  const tbody = document.getElementById('tp-tbody');
+  tbody.innerHTML = tpState.map((r,i)=>`
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;">
+          <span class="tp-activity-icon">${r.icon}</span>
+          <span class="tp-activity-name">${r.name}</span>
+        </div>
+        <div style="font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:2px;padding-left:26px;">${r.note}</div>
+      </td>
+      <td><input class="tp-input" type="number" min="0" max="30" step="0.5" value="${r.count}"   id="tp-count-${i}"   oninput="updateTp()" title="Events per month"></td>
+      <td><input class="tp-input" type="number" min="0" max="500" step="1"   value="${r.leads}"  id="tp-leads-${i}"   oninput="updateTp()" title="Leads per event"></td>
+      <td><input class="tp-pct-input" type="number" min="0" max="100" step="5" value="${r.qualPct}" id="tp-qual-${i}" oninput="updateTp()" title="Qualification rate %"></td>
+      <td><input class="tp-pct-input" type="number" min="0" max="100" step="5" value="${r.convPct}" id="tp-conv-${i}" oninput="updateTp()" title="Demo conversion %"></td>
+      <td><input class="tp-input" type="number" min="1" max="1000" step="1"  value="${r.upc}"    id="tp-upc-${i}"     oninput="updateTp()" title="Units per converted client"></td>
+      <td><div class="tp-units-out" id="tp-units-${i}">—</div></td>
+    </tr>`).join('');
+  updateTp();
+}
+
+function updateTp(){
+  let totalUnits = 0;
+  const breakdown = [];
+  tpState.forEach((r,i)=>{
+    const count   = parseFloat(document.getElementById(`tp-count-${i}`).value)||0;
+    const leads   = parseFloat(document.getElementById(`tp-leads-${i}`).value)||0;
+    const qualPct = parseFloat(document.getElementById(`tp-qual-${i}`).value)||0;
+    const convPct = parseFloat(document.getElementById(`tp-conv-${i}`).value)||0;
+    const upc     = parseFloat(document.getElementById(`tp-upc-${i}`).value)||0;
+    const units = count * leads * (qualPct/100) * (convPct/100) * upc;
+    totalUnits += units;
+    document.getElementById(`tp-units-${i}`).textContent = units.toFixed(1);
+    breakdown.push({name:r.name, icon:r.icon, units});
+  });
+
+  const ru = Math.round(totalUnits);
+  const sl = slab(Math.max(ru,1));
+  const perUnit = PRICE0 * sl.rate;
+  const monthlyComm = ru * perUnit;
+  const annualComm = monthlyComm * 12;
+  const monthlyRev = ru * PRICE0;
+
+  document.getElementById('tp-total').textContent = totalUnits.toFixed(1);
+  document.getElementById('ter-annual').textContent = fmt(annualComm);
+  document.getElementById('ter-mo').textContent = fmt(monthlyComm) + ' / month';
+  document.getElementById('ter-slab').textContent = (sl.rate*100).toFixed(0)+'%';
+  document.getElementById('ter-rev').textContent = fmt(monthlyRev);
+  document.getElementById('ter-rev-note').textContent = ru + ' units × ₹2L';
+  document.getElementById('ter-per-unit').textContent = fmt(perUnit);
+  document.getElementById('ter-gross').textContent = fmt(annualComm);
+
+  // Breakdown bars
+  const maxU = Math.max(...breakdown.map(b=>b.units), 0.01);
+  document.getElementById('tp-breakdown-bars').innerHTML = breakdown.map((b,idx)=>`
+    <div class="bar-row">
+      <span class="bar-lbl" style="width:200px;">${b.icon} ${b.name.substring(0,20)}</span>
+      <div class="bar-track">
+        <div class="bar-fill ${idx%2===0?'red':'cream'}" style="width:${(b.units/maxU*100).toFixed(1)}%;">${b.units.toFixed(1)}u</div>
+      </div>
+    </div>`).join('');
+}
+
+function resetTerritory(){
+  tpState = TP_DEFAULTS.map(r=>({...r}));
+  renderTpTable();
+}
+
+// ── FORECAST ──
+let fScen='conservative';
+function loadForecast(key,el){
+  fScen=key;
+  document.querySelectorAll('#forecast .pill').forEach(p=>p.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const s=SCENS[key];
+  document.getElementById('s-y2').value=s.y2;
+  document.getElementById('s-y3').value=s.y3;
+  document.getElementById('s-fs').value=s.strat;
+  renderForecast();
+}
+function renderForecast(){
+  const s=SCENS[fScen];
+  const y2r=+document.getElementById('s-y2').value;
+  const y3r=+document.getElementById('s-y3').value;
+  const strat=+document.getElementById('s-fs').value;
+  document.getElementById('l-y2').textContent=Math.round(y2r*100)+'%';
+  document.getElementById('l-y3').textContent=Math.round(y3r*100)+'%';
+  document.getElementById('l-fs').textContent=strat;
+
+  const u1=s.units, u2=Math.round(u1*(1+y2r)), u3=Math.round(u2*(1+y3r));
+  const s1=slab(u1),s2=slab(u2),s3=slab(u3);
+  const g1=u1*12*200000*s1.rate, g2=u2*12*200000*s2.rate, g3=u3*12*200000*s3.rate;
+  const sc=strat*200000*0.20;
+  const t1=g1+sc,t2=g2+sc,t3=g3+sc;
+  const total=t1+t2+t3;
+
+  document.getElementById('fc-total').textContent=fmt(total);
+
+  const yrs=[
+    {yr:'Year 1',u:u1,g:g1,sc,t:t1,grow:'—',primary:false},
+    {yr:'Year 2',u:u2,g:g2,sc,t:t2,grow:'+'+Math.round(y2r*100)+'%',primary:true},
+    {yr:'Year 3',u:u3,g:g3,sc,t:t3,grow:'+'+Math.round(y3r*100)+'%',primary:false},
+  ];
+  document.getElementById('year-cards').innerHTML=yrs.map(y=>`
+    <div class="year-card ${y.primary?'primary':''}">
+      <div class="year-label">${y.yr} · ${y.u} units/mo</div>
+      <div class="year-num">${fmt(y.t)}</div>
+      <div class="year-growth">${y.grow} · Regular: ${fmt(y.g)} · Strategic: ${fmt(y.sc)}</div>
+    </div>`).join('');
+
+  const mx=Math.max(t1,t2,t3);
+  document.getElementById('fc-bars').innerHTML=yrs.map((y,i)=>`
+    <div class="bar-row">
+      <span class="bar-lbl">${y.yr} (${y.u} u/mo)</span>
+      <div class="bar-track"><div class="bar-fill ${i===1?'red':'cream'}" style="width:${(y.t/mx*100).toFixed(1)}%;">${fmtS(y.t)}</div></div>
+    </div>`).join('');
+}
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded',()=>{
+  initOverview();
+  calc();
+  renderCommTable();
+  initStrategic();
+  initTerritory();
+  renderForecast();
+});
+</script>
+</body>
+</html>
